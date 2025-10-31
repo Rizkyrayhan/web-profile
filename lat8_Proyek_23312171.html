@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proyek_Lat5_23312171</title>
+
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100">
+
+<div class="flex">
+
+    <!-- Overlay Mobile -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-40 hidden z-40 lg:hidden"></div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed top-0 left-0 w-64 h-full bg-gray-900 text-white shadow-lg -translate-x-full lg:translate-x-0 transition-transform duration-300 z-50">
+        <nav class="mt-5 px-3">
+            <ul class="space-y-2">
+                <li><a href="lat4_Biodata_23312171.html#data-diri" class="flex items-center gap-2 p-2 rounded hover:bg-gray-800"><i class="fas fa-user"></i> Data Diri</a></li>
+                <li><a href="lat8_Keahlian_23312171.html" class="flex items-center gap-2 p-2 rounded hover:bg-gray-800"><i class="fas fa-cog"></i> Kelola Keahlian</a></li>
+                <li><a href="lat8_Proyek_23312171.html" class="flex items-center gap-2 p-2 rounded bg-blue-700"><i class="fas fa-briefcase"></i> Kelola Proyek</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Toggle Button Mobile -->
+    <button id="toggleSidebar" class="lg:hidden fixed top-4 left-4 bg-gray-900 text-white p-2 rounded-md z-50">
+        <i class="fas fa-bars text-lg"></i>
+    </button>
+
+    <!-- Main Content -->
+    <main class="flex-1 lg:ml-64">
+
+        <!-- Header Section -->
+        <div class="text-white py-10 bg-gradient-to-r from-blue-600 to-blue-800 text-center">
+            <h1 class="text-4xl font-bold mb-2">Kelola Data Proyek</h1>
+            <p class="text-lg opacity-90">Manajemen Proyek yang Pernah Dikerjakan</p>
+        </div>
+
+        <div class="p-6 space-y-8">
+
+            <!-- Kelola Proyek Section -->
+            <section id="kelola-proyek" class="bg-white rounded-lg shadow-lg p-6">
+                <!-- Control Panel -->
+                <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+                    <button id="btnTambahProyek" class="flex items-center gap-2 px-4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-800 transition">
+                        <i class="fas fa-plus"></i> Tambah Proyek
+                    </button>
+                    <div class="relative w-full md:w-auto max-w-sm">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-500"></i>
+                        <input type="text" id="searchProyek" placeholder="Cari proyek..." class="pl-10 pr-3 py-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full table-auto border-collapse border border-gray-200">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="px-4 py-3 border-b">Nama Proyek</th>
+                                <th class="px-4 py-3 border-b">Tahun</th>
+                                <th class="px-4 py-3 border-b">Jenis</th>
+                                <th class="px-4 py-3 border-b">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyProyek" class="text-gray-700">
+                            <!-- Data akan diisi JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</div>
+
+<!-- Modal -->
+<div id="modalProyek" class="fixed inset-0 bg-black bg-opacity-40 hidden z-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-lg w-96 p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h2 id="modalTitle" class="text-xl font-bold">Tambah Daftar Proyek</h2>
+            <button id="closeModal" class="text-gray-600 hover:text-gray-800"><i class="fas fa-times"></i></button>
+        </div>
+        <form id="formProyek" class="space-y-4">
+            <input type="hidden" id="editIndex" value="-1">
+            <div>
+                <label class="block mb-1 font-semibold">Nama Proyek *</label>
+                <input type="text" id="namaProyek" required class="w-full border px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label class="block mb-1 font-semibold">Tahun *</label>
+                <input type="number" id="tahunProyek" required class="w-full border px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label class="block mb-1 font-semibold">Jenis Proyek *</label>
+                <input type="text" id="jenisProyek" required class="w-full border px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label class="block mb-1 font-semibold">Tim Pengembang</label>
+                <input type="text" id="timProyek" class="w-full border px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label class="block mb-1 font-semibold">Deskripsi</label>
+                <textarea id="deskripsiProyek" rows="3" class="w-full border px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+            </div>
+            <div>
+                <label class="block mb-1 font-semibold">Gambar</label>
+                <input type="text" id="gambarProyek" class="w-full border px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label class="block mb-1 font-semibold">Video Demo</label>
+                <input type="text" id="videoProyek" class="w-full border px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="flex justify-end gap-3">
+                <button type="button" id="btnBatal" class="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400">Batal</button>
+                <button type="submit" class="px-4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-800">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="w-full text-center mt-8 py-4 text-gray-600 text-sm">
+    © 2025 Pweb2-IF23B-23312171 – Rizky Dwi Rayhan
+</footer>
+
+<!-- Sidebar Toggle -->
+<script>
+const toggleBtn = document.getElementById("toggleSidebar");
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+
+function toggleSidebarFunc() {
+    sidebar.classList.toggle("-translate-x-full");
+    sidebar.classList.toggle("translate-x-0");
+    overlay.classList.toggle("hidden");
+}
+
+toggleBtn.addEventListener("click", toggleSidebarFunc);
+overlay.addEventListener("click", toggleSidebarFunc);
+</script>
+
+<!-- Modal -->
+<script>
+const btnTambahProyek = document.getElementById("btnTambahProyek");
+const modalProyek = document.getElementById("modalProyek");
+const closeModal = document.getElementById("closeModal");
+const btnBatal = document.getElementById("btnBatal");
+
+btnTambahProyek.addEventListener("click", () => modalProyek.classList.remove("hidden"));
+closeModal.addEventListener("click", () => modalProyek.classList.add("hidden"));
+btnBatal.addEventListener("click", () => modalProyek.classList.add("hidden"));
+</script>
+
+<!-- Kelola Proyek JS -->
+<script src="js/kelola_proyek_23312171.js"></script>
+
+</body>
+</html>
