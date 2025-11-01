@@ -2,12 +2,15 @@
 include 'lat7_koneksi.php';
 header('Content-Type: application/json');
 
-$query = "SELECT * FROM tbproyek_23312171 WHERE visible = 1 ORDER BY tahun_proyek DESC";
+// Menggunakan VIEW yang sudah dibuat
+$query = "SELECT * FROM vwproyek_23312171 WHERE visible = 1";
 $result = $koneksi->query($query);
 
 $data = [];
-while ($row = $result->fetch_assoc()) {
-    $data[] = $row;
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $data[] = $row;
+    }
 }
 
 echo json_encode($data);

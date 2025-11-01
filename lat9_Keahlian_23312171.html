@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Keahlian_Lat4_23312171</title>
+<title>lat9_Keahlian_Lat8_23312171</title>
 
 <!-- Tailwind CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
@@ -22,9 +22,9 @@
     <aside id="sidebar" class="fixed top-0 left-0 w-64 h-full bg-gray-900 text-white shadow-lg -translate-x-full lg:translate-x-0 transition-transform duration-300 z-50">
         <nav class="mt-5 px-3">
             <ul class="space-y-2">
-                <li><a href="lat8_Biodata_23312171.html" class="flex items-center gap-2 p-2 rounded hover:bg-gray-800"><i class="fas fa-user"></i>Data Diri</a></li>
-                <li><a href="lat8_Keahlian_23312171.html" class="flex items-center gap-2 p-2 rounded bg-blue-700"><i class="fas fa-cog"></i>Kelola Keahlian</a></li>
-                <li><a href="lat8_Proyek_23312171.html" class="flex items-center gap-2 p-2 rounded hover:bg-gray-800"><i class="fas fa-briefcase"></i>Kelola Proyek</a></li>
+                <li><a href="lat9_Biodata_23312171.html" class="flex items-center gap-2 p-2 rounded hover:bg-gray-800"><i class="fas fa-user"></i>Data Diri</a></li>
+                <li><a href="lat9_Keahlian_23312171.html" class="flex items-center gap-2 p-2 rounded bg-blue-700"><i class="fas fa-cog"></i>Kelola Keahlian</a></li>
+                <li><a href="lat9_Proyek_23312171.html" class="flex items-center gap-2 p-2 rounded hover:bg-gray-800"><i class="fas fa-briefcase"></i>Kelola Proyek</a></li>
             </ul>
         </nav>
     </aside>
@@ -58,33 +58,47 @@
                     </div>
                 </div>
 
-                <!-- Table -->
-                <div class="overflow-x-auto">
+                <!-- Table - Desktop View -->
+                <div class="hidden md:block overflow-x-auto">
                     <table class="w-full table-auto border-collapse border border-gray-200">
                         <thead class="bg-gray-100">
                             <tr>
-                                <th class="px-4 py-2 border-b">Icon</th>
-                                <th class="px-4 py-2 border-b">Nama Keahlian</th>
-                                <th class="px-4 py-2 border-b">Deskripsi</th>
-                                <th class="px-4 py-2 border-b">Aksi</th>
+                                <th class="px-4 py-3 border-b text-left">Icon</th>
+                                <th class="px-4 py-3 border-b text-left">Nama Keahlian</th>
+                                <th class="px-4 py-3 border-b text-left">Deskripsi</th>
+                                <th class="px-4 py-3 border-b text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="tableBody" class="text-gray-700">
-                            <!-- Data akan diisi JS -->
+                            <tr>
+                                <td colspan="4" class="text-center py-4">
+                                    <i class="fas fa-spinner fa-spin text-2xl text-blue-600"></i>
+                                    <p class="mt-2">Memuat data...</p>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
+                </div>
+
+                <!-- Card Grid - Mobile View -->
+                <div id="mobileCards" class="md:hidden grid gap-4">
+                    <!-- Will be populated by JS -->
+                </div>
+            </section>
+
+        </div>
     </main>
 </div>
 
 <!-- Modal -->
-<div id="modalOverlay" class="fixed inset-0 bg-black bg-opacity-40 hidden z-50 flex items-center justify-center">
-    <div class="bg-white rounded-lg shadow-lg w-96 p-6">
+<div id="modalOverlay" class="fixed inset-0 bg-black bg-opacity-40 hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto p-6">
         <div class="flex justify-between items-center mb-4">
             <h2 id="modalTitle" class="text-xl font-bold">Tambah Data Keahlian</h2>
-            <button id="btnClose" class="text-gray-600 hover:text-gray-800"><i class="fas fa-times"></i></button>
+            <button id="btnClose" class="text-gray-600 hover:text-gray-800"><i class="fas fa-times text-xl"></i></button>
         </div>
         <form id="formKeahlian" class="space-y-4">
-            <input type="hidden" id="editIndex" value="-1">
+            <input type="hidden" id="editId" value="">
             <div>
                 <label class="block mb-1 font-semibold">Nama Keahlian <span class="text-red-500">*</span></label>
                 <input type="text" id="namaKeahlian" required class="w-full border px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -101,6 +115,10 @@
                     <option value="fa-laptop-code">Laptop Code</option>
                     <option value="fa-mobile-alt">Mobile</option>
                     <option value="fa-database">Database</option>
+                    <option value="fa-server">Server</option>
+                    <option value="fa-pencil-ruler">Pencil Ruler</option>
+                    <option value="fa-palette">Palette</option>
+                    <option value="fa-network-wired">Network</option>
                 </select>
                 <div class="flex items-center gap-3 mt-3">
                     <i id="iconPreview" class="fas text-3xl"></i>
@@ -136,56 +154,8 @@ toggleBtn.addEventListener("click", toggleSidebarFunc);
 overlay.addEventListener("click", toggleSidebarFunc);
 </script>
 
-<!-- Modal & Icon Preview -->
-<script>
-const btnTambah = document.getElementById("btnTambah");
-const modalOverlay = document.getElementById("modalOverlay");
-const btnClose = document.getElementById("btnClose");
-const btnBatal = document.getElementById("btnBatal");
-
-btnTambah.addEventListener("click", () => modalOverlay.classList.remove("hidden"));
-btnClose.addEventListener("click", () => modalOverlay.classList.add("hidden"));
-btnBatal.addEventListener("click", () => modalOverlay.classList.add("hidden"));
-
-const iconSelect = document.getElementById("iconKeahlian");
-const iconPreview = document.getElementById("iconPreview");
-const iconText = document.getElementById("iconText");
-
-iconSelect.addEventListener("change", () => {
-    iconPreview.className = "fas text-3xl " + iconSelect.value;
-    iconText.textContent = iconSelect.value ? iconSelect.value.replace("fa-", "") : "Preview icon akan muncul di sini";
-});
-</script>
-
-<!-- Kelola Keahlian JS -->
-<script src="js/kelola_keahlian_23312171.js"></script>
-
-<!-- ScrollSpy & Smooth Scroll -->
-<script>
-const navLinks = document.querySelectorAll(".sidebar nav a");
-const sections = document.querySelectorAll("main section");
-
-navLinks.forEach(link => {
-    link.addEventListener("click", function(e) {
-        e.preventDefault();
-        const targetId = this.getAttribute("href").substring(1);
-        const target = document.getElementById(targetId);
-        if(target) target.scrollIntoView({behavior:"smooth"});
-        if(!sidebar.classList.contains("-translate-x-full")) toggleSidebarFunc();
-    });
-});
-
-window.addEventListener("scroll", () => {
-    let current = "";
-    sections.forEach(sec => {
-        const top = sec.offsetTop - 150;
-        if(pageYOffset >= top) current = sec.id;
-    });
-    navLinks.forEach(link => link.classList.remove("bg-blue-700"));
-    const activeLink = document.querySelector(`.sidebar nav a[href="#${current}"]`);
-    if(activeLink) activeLink.classList.add("bg-blue-700");
-});
-</script>
+<!-- Kelola Keahlian MVC JS -->
+<script src="js/lat9_kelola_keahlian_mvc_23312171.js"></script>
 
 </body>
 </html>
